@@ -1,7 +1,7 @@
 <template>
 <div class="list">
     <h6>{{ list.name }}</h6>
-<hr />
+    <hr />
 
   <draggable v-model="list.cards" :options="{group: 'cards'}" class="dragArea" @change="cardMoved">
     <div v-for="(card, index) in list.cards" class="card card-body">
@@ -9,8 +9,10 @@
     </div>
   </draggable>
 
-  <textarea v-model="message" class="form-control mb-1"></textarea>
-  <button v-on:click="submitMessage" class="btn btn-secondary">Add</button>
+  <a v-if="!editing" v-on:click="startEditing">Add a card</a>
+    <textarea v-if="editing" ref="message" v-model="message" class="form-control mb-1"></textarea>
+    <button v-if="editing" v-on:click="submitMessage" class="btn btn-secondary">Add</button>
+    <a v-if="editing" v-on:click="editing=false">Cancel</a>
 </div>
 </template>
 
@@ -24,11 +26,17 @@ export default {
 
   data: function() {
     return {
+      editing: false,
       message: ""
     }
   },
 
   methods: {
+    startEditing: function() {
+      this.editing = true
+      this.$nextTick(() => { this.$refs.message.focus() })
+    },
+
     cardMoved: function(event) {
       const evt = event.added || event.moved
       if (evt == undefined ) { return }
@@ -59,15 +67,17 @@ export default {
         data.append("card[name]", this.message),
 
         Rails.ajax({
+
           url: "/cards",
           type: "POST",
           data: data,
           dataType: "json",
           beforeSend: function() { return true },
           success: (data) => {
-            const index = window.store.lists.findIndex(item => item.id == list_id);
+            const index = window.store.lists.findIndex(item => item.id == this.list.id);
             window.store.lists[index].cards.push(data);
             this.message = ""
+            this.$nextTick(() => { this.$refs.message.focus() })
           }
         });
       },
