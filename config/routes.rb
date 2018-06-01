@@ -7,7 +7,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :cards do
+    member do
+      patch :move
+    end
+  end
+
   resources :cards
 
-  root to: 'pages#index'
+  root to: 'lists#index'
 end
