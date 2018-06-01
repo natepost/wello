@@ -1,34 +1,20 @@
 <template>
   <draggable v-model="lists" :options="{group: 'lists'}" class="board dragArea" @end="listMoved">
-    <div v-for="(list, index) in lists" class="list">
-      <h6>{{ list.name }}</h6>
-    <hr />
-
-    <draggable v-model="list.cards" :options="{group: 'cards'}" class="dragArea" @change="cardMoved">
-      <div v-for="(card, index) in list.cards" class="card card-body">
-        {{  card.name  }}
-      </div>
-    </draggable>
-
-
-        <textarea v-model="messages[list.id]" class="form-control mb-1"></textarea>
-        <button v-on:click="submitMessages(list.id)" class="btn btn-secondary">Add</button>
-
-      </div>
+    <list v-for="(list, index) in lists" :list="list"></list>
   </draggable>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
+import list from 'components/list'
 
 export default {
-  components: { draggable },
+  components: { draggable, list },
 
   props: ["original_lists"],
 
   data: function() {
     return {
-      messages: {},
       lists: this.original_lists,
     }
   },
@@ -71,24 +57,7 @@ export default {
       })
     },
 
-    submitMessages: function(list_id) {
-      var data = new FormData
-      data.append("card[list_id]", list_id)
-      data.append("card[name]", this.messages[list_id]),
 
-      Rails.ajax({
-        url: "/cards",
-        type: "POST",
-        data: data,
-        dataType: "json",
-        beforeSend: function() { return true },
-        success: (data) => {
-          const index = this.lists.findIndex(item => item.id == list_id);
-          this.lists[index].cards.push(data);
-          this.messages[list_id] = undefined;
-        }
-      });
-  }
 }
 }
 </script>
@@ -99,18 +68,8 @@ export default {
 }
 
 .board {
-
   overflow-x: auto;
   white-space: nowrap;
 }
 
-.list {
-  background: #E2E4E6;
-  border-radius: 3px;
-  display: inline-block;
-  margin-right: 20px;
-  padding: 10px;
-  vertical-align: top;
-  width: 270px;
-}
 </style>
