@@ -4,7 +4,7 @@
     <hr />
 
   <draggable v-model="list.cards" :options="{group: 'cards'}" class="dragArea" @change="cardMoved">
-    <card v-for="card in list.cards" :card="card"></card>
+    <card v-for="card in list.cards" :card="card" :list="list"></card>
   </draggable>
 
   <a v-if="!editing" v-on:click="startEditing">Add a card</a>

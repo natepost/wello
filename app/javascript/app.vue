@@ -1,7 +1,9 @@
 <template>
-  <draggable v-model="lists" :options="{group: 'lists'}" class="board dragArea" @end="listMoved">
-    <list v-for="(list, index) in lists" :list="list"></list>
-  </draggable>
+  <div class="board">
+    <draggable v-model="lists" :options="{group: 'lists'}" class="board dragArea" @end="listMoved">
+      <list v-for="(list, index) in lists" :list="list"></list>
+    </draggable>
+  </div>
 </template>
 
 <script>
@@ -16,6 +18,8 @@ export default {
   data: function() {
     return {
       lists: this.original_lists,
+      editing: false,
+      message: "",
     }
   },
 
