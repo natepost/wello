@@ -15,7 +15,5 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :cards
-
   root to: 'lists#index'
 end

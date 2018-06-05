@@ -16,7 +16,7 @@
             <input v-model="name" class="form-control"></input>
           </div>
           <div class="modal-footer">
-            <button @click="saveModal" type="button" class="btn btn-primary">Save changes</button>
+            <button @click="save" type="button" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>
@@ -38,8 +38,8 @@ export default {
     closeModal: function(event) {
       if (event.target.classList.contains("modal")) { this.editing = false }
     },
-    
-    saveModal: function() {
+
+    save: function() {
       var data = new FormData
       data.append("card[name]", this.name)
 
