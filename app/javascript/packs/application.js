@@ -9,6 +9,10 @@
 
 import Vue from 'vue/dist/vue.esm'
 import App from "../app.vue"
+import TurbolinksAdapter from 'vue-turbolinks'
+import VueResource from 'vue-resource'
+
+Vue.use(VueResource)
 
 window.store = {}
 

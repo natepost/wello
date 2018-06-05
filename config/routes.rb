@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get '/components', to: 'components#index'
+
   devise_for :users
 
   resources :lists do
