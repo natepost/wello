@@ -45,7 +45,7 @@ export default {
 
       Rails.ajax({
         beforeSend: () => true,
-        url: '/cards/${this.card.id}',
+        url: `/cards/${this.card.id}`,
         type: "PATCH",
         data: data,
         dataType: "json",
